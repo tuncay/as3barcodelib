@@ -50,14 +50,12 @@ package com.webqem.barcode.symbology.EAN13 {
 		}
 
 		public function decodeBarcode(data:IEncodedBarcodeData):IDecodedBarcodeData {
-
+			var startTime:int = getTimer();
 			var barcode:String;
 
 			if (data.encodedData[0] is Array) {
 				for (var i:uint = 0; i < data.encodedData.length; i++) {
-					var startTime:int = getTimer();
 					barcode = processScanData(data.encodedData[i], data.indexes[i].start, data.indexes[i].end);
-					trace("decodeBarcode", getTimer() - startTime);
 					if (barcode && isValidBarcode(barcode)) {
 						break;
 					}
@@ -66,7 +64,7 @@ package com.webqem.barcode.symbology.EAN13 {
 			else {
 				barcode = processScanData(data.encodedData, data.indexes[0].start, data.indexes[0].end);
 			}
-
+			trace("decodeBarcode", getTimer() - startTime);
 			return new EAN13DecodedData(barcode);
 		}
 
